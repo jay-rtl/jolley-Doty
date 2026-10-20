@@ -1,0 +1,39 @@
+{
+  "name": "jalleh-doty-author",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "next build",
+    "start": "node scripts/serve-static.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test --test-isolation=none tests/*.test.mjs",
+    "audit:browser": "node scripts/browser-audit.mjs",
+    "format": "prettier --write src scripts tests next.config.ts tsconfig.json package.json",
+    "format:check": "prettier --check src scripts tests next.config.ts tsconfig.json package.json",
+    "audit:motion": "node scripts/motion-audit.mjs",
+    "audit:pages": "node scripts/pages-audit.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/cormorant-garamond": "^5.3.0",
+    "gsap": "^3.14.0",
+    "lucide-react": "^0.468.0",
+    "next": "^16.0.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.0",
+    "@playwright/test": "^1.56.0",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "pdf-parse": "^2.4.0",
+    "prettier": "^3.9.10",
+    "sharp": "^0.34.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9.0"
+  }
+}
