@@ -94,7 +94,7 @@ export function BookCover({ book, priority = false }: { book: Book; priority?: b
     </div>
   );
 }
-export function PurchaseOptions({ book }: { book: Book }) {
+export function PurchaseOptions({ book, compact = false }: { book: Book; compact?: boolean }) {
   return (
     <div className="purchase-options">
       <span className="format-label">Paperback</span>
@@ -108,11 +108,12 @@ export function PurchaseOptions({ book }: { book: Book }) {
             className="button"
             type="button"
             disabled
-            aria-describedby={`ingram-${book.slug}`}
+            aria-describedby={compact ? undefined : `ingram-${book.slug}`}
+            title="Ingram purchase link coming soon"
           >
             Buy paperback via Ingram <ArrowUpRight size={16} aria-hidden="true" />
           </button>
-          <p id={`ingram-${book.slug}`}>Ingram purchase link coming soon.</p>
+          {!compact && <p id={`ingram-${book.slug}`}>Ingram purchase link coming soon.</p>}
         </div>
       )}
       {book.retailerUrl && (
@@ -120,9 +121,11 @@ export function PurchaseOptions({ book }: { book: Book }) {
           View another retailer <ArrowUpRight size={16} aria-hidden="true" />
         </a>
       )}
-      <ArrowLink href={`/contact?subject=signed-copy&book=${encodeURIComponent(book.subtitle)}`}>
-        Inquire about a signed copy
-      </ArrowLink>
+      {!compact && (
+        <ArrowLink href={`/contact?subject=signed-copy&book=${encodeURIComponent(book.subtitle)}`}>
+          Inquire about a signed copy
+        </ArrowLink>
+      )}
     </div>
   );
 }

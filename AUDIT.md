@@ -2,6 +2,8 @@
 
 ## Implemented
 
+Latest listing cleanup: removed the visible Ingram coming-soon note and signed-copy inquiry links from homepage/catalog book listings. Paperback buttons remain disabled until URLs are supplied; their availability is retained in the hover title. Individual book pages retain the explanatory note and signed-copy inquiry flow. Shared `PurchaseOptions` uses a compact listing variant; no commerce/backend behavior changed.
+
 Owner authorized publication to `jay-rtl/jolley-Doty` and selected GitHub Pages. Converted the reviewed Next.js site to static export, added the `/jolley-Doty` deployment path, adjusted local images/fonts/icons and absolute SEO URLs, and added a GitHub Actions build/deploy workflow. Contact queries now prefill in the browser; the disabled form blocks submission without sending or storing data. The inactive Node backend is preserved in `src/server/contact-route.ts`. The empty news article route is preserved as `src/templates/news-article.tsx` until real articles exist.
 
 The thirteen content pages, authentic covers/portrait, paperback-only Ingram placeholders and GSAP effects are retained. No verified retail links, payment credentials or contact destination have been supplied. No real commerce or email delivery is claimed.

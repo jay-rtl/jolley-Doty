@@ -148,7 +148,7 @@ export default function Home() {
                 </div>
                 <ArrowLink href={`/books/${book.slug}`}>Details</ArrowLink>
               </div>
-              <PurchaseOptions book={book} />
+              <PurchaseOptions book={book} compact />
             </article>
           ))}
         </div>

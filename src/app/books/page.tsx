@@ -37,7 +37,7 @@ export default function BooksPage() {
                 </div>
                 <ArrowLink href={`/books/${book.slug}`}>Explore book</ArrowLink>
               </div>
-              <PurchaseOptions book={book} />
+              <PurchaseOptions book={book} compact />
             </article>
           ))}
         </div>
@@ -56,7 +56,7 @@ export default function BooksPage() {
             </h2>
             <p>{standalone.description}</p>
             <ArrowLink href={`/books/${standalone.slug}`}>Explore the collection</ArrowLink>
-            <PurchaseOptions book={standalone} />
+            <PurchaseOptions book={standalone} compact />
           </div>
         </article>
       </section>
