@@ -53,9 +53,9 @@ Public assets are in `public/images/`. Do not publish questionnaires, full manus
 
 ## Static-hosting limitations
 
-GitHub Pages does not run Node/API routes or Next.js image optimization. Images were pre-optimized locally and are exported directly. `src/server/contact-route.ts` preserves the previous server implementation but is **not deployed or active**. The contact UI is explicitly unavailable and blocks submissions, including programmatic form submission; it does not send or store correspondence on Pages.
+GitHub Pages does not run Node/API routes or Next.js image optimization. Images were pre-optimized locally and are exported directly. `src/server/contact-route.ts` preserves the previous server implementation but is **not deployed or active**. The contact form prepares a draft locally; the visitor reviews it, opens their email app and clicks Send there. It never submits or stores correspondence on Pages. Copy email details provides a fallback when an app cannot open the full draft. With no confirmed recipient configured, preparation remains disabled.
 
-To enable correspondence later, use a separately hosted, owner-approved form backend or migrate to server hosting. Review provider agreements, retention, operator contact/jurisdiction and final privacy text first. The reserved server environment variables in `.env.example` cannot enable the contact API on GitHub Pages. No merchant account or payment integration is active.
+To enable manual email later, set the GitHub repository Actions variable `CONTACT_EMAIL` to the owner-approved public recipient, then rebuild/deploy. The workflow exposes it as `NEXT_PUBLIC_CONTACT_EMAIL`; it is public, not a secret. No backend is needed. Local builds can set the same public environment variable. Confirm inbox access, retention, operator contact/jurisdiction and final privacy text before activation. A server-backed delivery service would require separate implementation. The reserved server environment variables in `.env.example` cannot enable the contact API on GitHub Pages. No merchant account or payment integration is active.
 
 Static Pages also does not apply `headers()` from Next.js. A supported HTML meta CSP is included, with inline scripts/styles required for hydration. Header-only protections such as frame-ancestors and nosniff cannot be configured by this project on GitHub Pages; do not treat the old server-header audit as proof of production headers. GitHub controls hosting headers. Optional analytics/tracking have not been added.
 
@@ -64,3 +64,7 @@ Static Pages also does not apply `headers()` from Next.js. A supported HTML meta
 The workflow supplies the actual Pages URL/base path so static canonicals, social metadata, JSON-LD and sitemap reference the correct project location. Public pages do not contain noindex/nofollow. Project robots.txt is exported, but origin-wide robots behavior is controlled at the GitHub Pages host root. Verify the public deployment before Search Console submission; no indexing/ranking guarantee is implied.
 
 Outstanding owner content: verified Ingram URLs, full biography/blurbs/edition details, standalone cover, final Book 2 artwork and approved privacy/legal text. Genuine social URLs, reviews, media/captions, news and events may be added when supplied. The published site may serve as a review preview while these remain pending; it must not be described as a fully operational store or correspondence service.
+
+## Manual email verification
+
+`node scripts/manual-email-audit.mjs` requires a LOCAL fixture build using `NEXT_PUBLIC_CONTACT_EMAIL=author@example.test` and the static preview. It tests preparation, validation, safe encoding, draft invalidation, copy/fallback, no-JS blocking and axe at 1440/390px without opening a mail app or sending mail. Rebuild with an empty recipient afterward; never deploy the fixture address. The owner has deferred supplying an address, so public contact remains disabled.

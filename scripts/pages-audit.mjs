@@ -74,7 +74,24 @@ try {
   await page.waitForURL('**/contact/**');
   await page.waitForFunction(() => document.querySelector('#subject')?.value === 'signed-copy');
   assert.ok((await page.locator('#message').inputValue()).includes('Last Savior'));
-  assert.equal(await page.getByRole('button', { name: 'Contact opening soon' }).isDisabled(), true);
+  const prepare = page.getByRole('button', { name: 'Prepare email', exact: true });
+  if (await prepare.count()) {
+    await page.locator('#name').fill('A Reader');
+    await page.locator('#email').fill('reader@example.org');
+    await page.locator('input[name=consent]').check();
+    await prepare.click();
+    await page.getByRole('heading', { name: 'Your email draft is ready.' }).waitFor();
+    assert.ok(
+      (await page.getByRole('link', { name: 'Open email app' }).getAttribute('href')).startsWith(
+        'mailto:',
+      ),
+    );
+  } else {
+    assert.equal(
+      await page.getByRole('button', { name: 'Contact opening soon' }).isDisabled(),
+      true,
+    );
+  }
   report.checks.push('Static query-string inquiry and disabled purchases verified');
   for (const width of [1440, 1024, 768, 390, 320]) {
     await page.setViewportSize({ width, height: 1000 });

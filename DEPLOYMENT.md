@@ -13,3 +13,5 @@ Owner selected GitHub Pages and authorized uploading/deploying the supplied repo
 The site is exported HTML/CSS/JS, including GSAP and thirteen public content pages. Contact backend code is preserved outside active routes. Ingram buttons and contact submission remain unavailable until separately configured. Missing content and draft privacy text remain visible review items.
 
 Publication status will be verified against the GitHub Actions result and the public URL, not inferred from a successful push. See `AUDIT.md` and ignored `artifacts/pages-audit.json` for verification evidence.
+
+Manual email drafts are implemented without a backend. Optional repository Actions variable `CONTACT_EMAIL` supplies the public recipient at build time. The owner deferred this address; leave it unset so preparation stays disabled. No automatic sending, inbox delivery or email-client compatibility is claimed.

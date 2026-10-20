@@ -77,6 +77,8 @@ export type AuthorEvent = { title: string; start: string; location: string; url?
 export const events: AuthorEvent[] = [];
 export const media: { title: string; src: string; poster: string; captions: string }[] = [];
 export const socialLinks: { label: string; url: string }[] = [];
+// Public recipient, supplied/approved by the author. Blank keeps preparation unavailable.
+export const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL || '';
 export const bio =
   'An ambitious author writing for the people, Jalleh Doty has spent approximately twenty years developing her writing. Her work includes The Child of Humanity series, written with Pari Adli, and the earlier publication Poetry and Satire for the Avant-Garde.';
 export const tagline = 'Retain an open mind in the realm of possibilities.';

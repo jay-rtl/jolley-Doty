@@ -64,3 +64,28 @@ Build environment used `NEXT_PUBLIC_BASE_PATH=/jolley-Doty` and `NEXT_PUBLIC_SIT
 ## Next action
 
 Verify the deployment workflow succeeds, visit the public project URL, then provide the author-supplied Ingram URLs and remaining approved content.
+
+
+## Manual email update ? 20 October 2026
+
+Implemented browser-only email drafting in contact-form.tsx and manual-email.mjs, optional public recipient configuration, draft preview, manual email-app link, copy fallback and accurate privacy copy. Existing light editorial design and GSAP retained. Fixed outline-button hover contrast. Owner explicitly deferred supplying the address: contact preparation remains disabled in the production build; the test recipient is local-only.
+
+| Category | Status | Evidence |
+| --- | --- | --- |
+| Functionality ? local fixture | PASS | Edge at 1440/390px: validation/focus, signed-copy prefill, draft, clipboard stub/fallback, stale draft removal and no automatic POST. |
+| Functionality ? actual email delivery | NOT TESTED | No recipient supplied; no mail app opened or message sent. |
+| SEO ? changed pages | PASS | Existing contact/privacy metadata retained; canonical/sitemap coverage checked by Pages audit. |
+| Responsive/Visual ? draft | PASS | Desktop/mobile rendered screenshots reviewed; no tested horizontal overflow; existing visual language retained. |
+| Accessibility ? draft | PASS | Axe A/AA zero violations at 1440/390px, validation/draft focus and no-JS submit blocking checked. |
+| Accessibility ? full assistive technology | NOT TESTED | Screen reader and real-device review not performed. |
+| Security/Privacy ? draft flow | PASS | Validated recipient, encoded subject/body, injection tests, no network submission, no personal data in page URL; explicit user clipboard action only. |
+| Security/Privacy ? owner/legal review | NOT TESTED | Recipient, inbox retention and approved privacy notice remain pending. |
+| Performance ? build | PASS | Static export succeeded, 18 routes; no new dependency or backend. |
+| Performance ? CWV | NOT TESTED | No Lighthouse or real-user measurements. |
+| Code/Regression | PASS | npm test: 11 passed; npm run typecheck, npm run format:check and npm run build passed on Windows/Node 24.18.0. |
+
+Tests: npm test; npm run typecheck; npm run format:check; npm run build (fixture then empty recipient); node scripts/manual-email-audit.mjs. Fixture browser report: artifacts/manual-email-audit.json (ignored). Real email-client compatibility/delivery is unverified. No fixture address configured for deployment.
+
+Readiness: READY FOR REVIEW. Next action: owner supplies the public recipient when ready; set repository Actions variable CONTACT_EMAIL and rebuild. Existing retail/content/legal gaps remain.
+
+Final empty-recipient export: node scripts/pages-audit.mjs PASS on thirteen routes; zero axe violations, runtime page errors or failed checked assets. Canonical/sitemap and no-JS content passed; homepage overflow checks passed at 320/390/768/1024/1440px. Generated out/ was searched and contains no local fixture recipient.

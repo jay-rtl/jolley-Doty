@@ -26,6 +26,7 @@ jobs:
         env:
           NEXT_PUBLIC_BASE_PATH: /jolley-Doty
           NEXT_PUBLIC_SITE_URL: https://jay-rtl.github.io/jolley-Doty
+          NEXT_PUBLIC_CONTACT_EMAIL: ${{ vars.CONTACT_EMAIL }}
       - run: touch out/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -12,29 +12,30 @@ export default function Privacy() {
       <div className="wrap">
         <article className="prose">
           <p className="notice">
-            Draft for owner review. The operator’s jurisdiction, contact information, retention
-            period and service-provider agreements must be confirmed before contact submissions are
-            enabled or the site launches.
+            Draft for owner review. The operator’s jurisdiction, contact information and inbox
+            retention decisions still require confirmation.
           </p>
           <h2>Browsing this website</h2>
           <p>
             The application does not add analytics, advertising pixels or optional tracking cookies.
-            Fonts and images are served locally. The eventual hosting provider may process technical
-            request data; its policies and log retention must be confirmed before launch.
+            Fonts and images are served with the site on GitHub Pages. The hosting provider may
+            process technical request data under its own policies.
           </p>
           <h2>Contact inquiries</h2>
           <p>
-            The contact service is currently unavailable. When configured, the form will send your
-            name, email address, inquiry type and message through Resend to the author’s designated
-            inbox. The application does not store inquiry content in its own database. Access and
-            retention in the inbox and email service must be set by the owner.
+            The form prepares an email draft in your browser. Your name, reply email address,
+            inquiry type and message are not submitted to or stored by this website. Selecting “Open
+            email app” passes the draft to your configured email app. You must review and send the
+            message yourself; opening a draft does not send it. “Copy email details” copies the
+            draft to your clipboard only when selected.
           </p>
-          <h2>Spam prevention</h2>
+          <h2>Your email service</h2>
           <p>
-            The planned service uses a hidden spam field, validation and request limits. For rate
-            limiting, an IP-derived keyed hash is held in Upstash Redis for ten minutes. The
-            deployment must provide a trusted client IP address. Raw IP addresses are not stored by
-            the application’s rate limiter.
+            After you choose to send, your email service and the author’s inbox process the email
+            under their respective policies. Inbox access and retention must be confirmed by the
+            owner. This website cannot confirm that your email app opened or that an email was
+            delivered. An email app and a confirmed recipient address are required for the draft
+            link.
           </p>
           <h2>Reader reviews</h2>
           <p>

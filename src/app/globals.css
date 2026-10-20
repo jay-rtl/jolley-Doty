@@ -152,6 +152,9 @@ p {
   background: transparent;
   color: var(--ink);
 }
+.button-outline:hover {
+  background: #e0e7df;
+}
 .arrow-link {
   display: inline-flex;
   align-items: center;
@@ -1099,6 +1102,61 @@ p {
 }
 .inline-note {
   font-size: 12px;
+}
+.manual-email-intro {
+  font-size: 13px;
+  margin: 0;
+  color: var(--muted);
+}
+.contact-recipient a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  overflow-wrap: anywhere;
+}
+.email-draft {
+  border: 1px solid #b7c5bf;
+  background: #edf1eb;
+  padding: 25px;
+  min-width: 0;
+  scroll-margin-top: 140px;
+}
+.email-draft .eyebrow {
+  margin-bottom: 12px;
+}
+.email-draft h3 {
+  font-size: 30px;
+  margin-bottom: 14px;
+}
+.email-draft > p {
+  font-size: 13px;
+}
+.email-draft > label {
+  display: block;
+  font-size: 11px;
+  margin: 20px 0 8px;
+}
+.email-draft textarea {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  padding: 14px;
+  border: 1px solid #adb9b8;
+  background: #fffefb;
+  color: var(--ink);
+  font: 12px/1.7 var(--sans);
+  resize: vertical;
+  min-height: 230px;
+}
+.email-draft-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 20px 0 15px;
+}
+.email-draft-actions .button {
+  font-size: 11px;
+  gap: 15px;
 }
 .intro-skip {
   position: relative;
