@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { ArrowUpRight, ArrowRight } from 'lucide-react';
 import type { Book } from '@/lib/content';
 import { assetPath } from '@/lib/paths';
@@ -13,7 +12,7 @@ export function ArrowLink({
   className?: string;
 }) {
   return (
-    <Link href={href} className={`arrow-link ${className}`}>
+    <Link prefetch={false} href={href} className={`arrow-link ${className}`}>
       {children}
       <ArrowUpRight size={17} aria-hidden="true" />
     </Link>
@@ -29,7 +28,7 @@ export function ButtonLink({
   secondary?: boolean;
 }) {
   return (
-    <Link href={href} className={`button ${secondary ? 'button-outline' : ''}`}>
+    <Link prefetch={false} href={href} className={`button ${secondary ? 'button-outline' : ''}`}>
       {children}
       <ArrowRight size={16} aria-hidden="true" />
     </Link>
@@ -41,13 +40,6 @@ export function Eyebrow({ children }: { children: React.ReactNode }) {
       <span aria-hidden="true" />
       {children}
     </p>
-  );
-}
-export function Ornament() {
-  return (
-    <span className="ornament" aria-hidden="true">
-      ◆
-    </span>
   );
 }
 export function PageHeading({
@@ -71,13 +63,24 @@ export function BookCover({ book, priority = false }: { book: Book; priority?: b
   return (
     <div className={`book-object ${!book.cover ? 'book-placeholder' : ''}`}>
       {book.cover ? (
-        <Image
+        <img
           src={assetPath(book.cover)}
+          srcSet={[
+            ...[320, 480, 640]
+              .filter((width) => width <= (book.coverWidth || 0))
+              .map(
+                (width) =>
+                  `${assetPath(book.cover!.replace('/images/', '/images/responsive/').replace('.webp', `-${width}.webp`))} ${width}w`,
+              ),
+            `${assetPath(book.cover)} ${book.coverWidth}w`,
+          ].join(', ')}
           alt={`${book.title}${book.volume ? `: ${book.subtitle}, Book ${book.volume}` : ''}, by ${book.authors.join(' and ')}`}
-          width={620}
-          height={930}
-          priority={priority}
-          sizes="(max-width: 650px) 70vw, 360px"
+          width={book.coverWidth}
+          height={book.coverHeight}
+          loading={priority ? 'eager' : 'lazy'}
+          fetchPriority={priority ? 'high' : 'auto'}
+          decoding="async"
+          sizes="(max-width: 650px) 220px, 280px"
         />
       ) : (
         <div>

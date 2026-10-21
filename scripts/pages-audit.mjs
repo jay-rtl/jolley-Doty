@@ -10,7 +10,7 @@ const page = await context.newPage();
 const report = { base, pages: [], errors: [], failedAssets: [], checks: [] };
 page.on('pageerror', (e) => report.errors.push(e.message));
 page.on('response', (r) => {
-  if (r.status() >= 400 && /\.(js|css|woff2|webp|jpg|svg)(\?|$)/.test(r.url()))
+  if (r.status() >= 400 && /\.(js|css|woff2|webp|jpg|svg|txt)(\?|$)/.test(r.url()))
     report.failedAssets.push({ url: r.url(), status: r.status() });
 });
 const paths = [
@@ -43,9 +43,34 @@ try {
       }
     });
     await page.waitForTimeout(1500);
-    await page.waitForFunction(() =>
-      [...document.images].every((i) => i.complete && i.naturalWidth > 0),
-    );
+    const exhibition = page.locator('.exhibition-track');
+    if (await exhibition.count()) {
+      await exhibition.scrollIntoViewIfNeeded();
+      for (let index = 0; index < 3; index++) {
+        await exhibition.evaluate(
+          (el, i) => el.scrollTo({ left: i * el.clientWidth, behavior: 'instant' }),
+          index,
+        );
+        await page.waitForTimeout(250);
+      }
+      await exhibition.evaluate((el) => el.scrollTo({ left: 0, behavior: 'instant' }));
+    }
+    await page
+      .waitForFunction(() => [...document.images].every((i) => i.complete && i.naturalWidth > 0))
+      .catch(async (error) => {
+        console.log(
+          await page.locator('img').evaluateAll((els) =>
+            els
+              .filter((el) => !el.complete || !el.naturalWidth)
+              .map((el) => ({
+                src: el.src,
+                loading: el.loading,
+                rect: el.getBoundingClientRect().toJSON(),
+              })),
+          ),
+        );
+        throw error;
+      });
     const result = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
       .analyze();
@@ -72,10 +97,10 @@ try {
   await page.goto(base + '/books/the-child-of-humanity-last-savior/');
   await page.getByRole('link', { name: 'Inquire about a signed copy' }).click();
   await page.waitForURL('**/contact/**');
-  await page.waitForFunction(() => document.querySelector('#subject')?.value === 'signed-copy');
-  assert.ok((await page.locator('#message').inputValue()).includes('Last Savior'));
   const prepare = page.getByRole('button', { name: 'Prepare email', exact: true });
   if (await prepare.count()) {
+    await page.waitForFunction(() => document.querySelector('#subject')?.value === 'signed-copy');
+    assert.ok((await page.locator('#message').inputValue()).includes('Last Savior'));
     await page.locator('#name').fill('A Reader');
     await page.locator('#email').fill('reader@example.org');
     await page.locator('input[name=consent]').check();
@@ -87,10 +112,8 @@ try {
       ),
     );
   } else {
-    assert.equal(
-      await page.getByRole('button', { name: 'Contact opening soon' }).isDisabled(),
-      true,
-    );
+    assert.ok((await page.getByRole('status').innerText()).includes('once confirmed'));
+    assert.equal(await page.locator('.contact-form').count(), 0);
   }
   report.checks.push('Static query-string inquiry and disabled purchases verified');
   for (const width of [1440, 1024, 768, 390, 320]) {

@@ -20,7 +20,9 @@ export default function News() {
               <article className="news-card" key={article.slug}>
                 <time dateTime={article.date}>{article.date}</time>
                 <h2>
-                  <Link href={`/news/${article.slug}`}>{article.title}</Link>
+                  <Link prefetch={false} href={`/news/${article.slug}`}>
+                    {article.title}
+                  </Link>
                 </h2>
                 <p>{article.excerpt}</p>
               </article>

@@ -36,8 +36,8 @@ export default function Contact() {
           </p>
           <h3>A note from a reader.</h3>
           <p>
-            Reader reviews may be submitted here. Reviews are privately reviewed before any
-            publication, and permission will be requested before your words or name are shared.
+            When correspondence opens, reader reviews may be sent to Jalleh. Permission will be
+            requested before your words or name are shared publicly.
           </p>
           <p className="inline-note">
             Please don’t send a full postal address or payment information in your first message.

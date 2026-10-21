@@ -23,11 +23,15 @@ export default function Privacy() {
           </p>
           <h2>Contact inquiries</h2>
           <p>
-            The form prepares an email draft in your browser. Your name, reply email address,
-            inquiry type and message are not submitted to or stored by this website. Selecting “Open
-            email app” passes the draft to your configured email app. You must review and send the
-            message yourself; opening a draft does not send it. “Copy email details” copies the
-            draft to your clipboard only when selected.
+            Contact is currently unavailable while the recipient address is being confirmed. No
+            inquiry form is active until that address is supplied.
+          </p>
+          <p>
+            Once enabled, the form prepares an email draft in your browser. Your name, reply email
+            address, inquiry type and message are not submitted to or stored by this website.
+            Selecting “Open email app” passes the draft to your configured email app. You must
+            review and send the message yourself; opening a draft does not send it. “Copy email
+            details” copies the draft to your clipboard only when selected.
           </p>
           <h2>Your email service</h2>
           <p>

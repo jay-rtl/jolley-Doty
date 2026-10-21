@@ -1,10 +1,21 @@
 import type { Metadata } from 'next';
+import localFont from 'next/font/local';
 import { Navigation } from '@/components/navigation';
 import { Footer } from '@/components/footer';
 import { Motion } from '@/components/motion';
 import { productionUrl } from '@/lib/site';
 import { assetPath } from '@/lib/paths';
 import './globals.css';
+const literary = localFont({
+  src: [
+    { path: '../../public/fonts/literary.woff2', weight: '400 700', style: 'normal' },
+    { path: '../../public/fonts/literary-italic.woff2', weight: '400 700', style: 'italic' },
+  ],
+  variable: '--font-literary',
+  display: 'swap',
+  preload: true,
+  fallback: ['Georgia'],
+});
 export const metadata: Metadata = {
   metadataBase: new URL(productionUrl() ?? 'http://localhost:3000'),
   title: { default: 'Jalleh Doty | Author & Storyteller', template: '%s | Jalleh Doty' },
@@ -15,7 +26,7 @@ export const metadata: Metadata = {
 };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={literary.variable}>
       <head>
         <meta
           httpEquiv="Content-Security-Policy"

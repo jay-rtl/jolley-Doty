@@ -22,6 +22,7 @@ export default function BooksPage() {
           {series.map((book, i) => (
             <article className="series-book" key={book.slug}>
               <Link
+                prefetch={false}
                 href={`/books/${book.slug}`}
                 className={`cover-stage cover-stage-${i + 1}`}
                 aria-label={`Read about ${book.subtitle}`}

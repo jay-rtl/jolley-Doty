@@ -1,9 +1,11 @@
 import http from 'node:http';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { gzipSync } from 'node:zlib';
 const root = path.resolve('out');
 const prefix = process.env.NEXT_PUBLIC_BASE_PATH || '/jolley-Doty';
 const port = Number(process.env.PORT || 3000);
+const compressed = new Map();
 const types = {
   '.html': 'text/html; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
@@ -48,11 +50,29 @@ http
         file = path.join(file, 'index.html');
       }
       const data = await fs.readFile(file);
+      const compress =
+        /\.(?:html|js|css|json|svg|txt|xml)$/.test(file) &&
+        /\bgzip\b/.test(req.headers['accept-encoding'] || '');
+      let body = data;
+      if (compress) {
+        const modified = (await fs.stat(file)).mtimeMs;
+        const cached = compressed.get(file);
+        if (cached?.modified === modified) body = cached.body;
+        else {
+          body = gzipSync(data);
+          compressed.set(file, { modified, body });
+        }
+      }
       res.writeHead(200, {
         'Content-Type': types[path.extname(file)] || 'application/octet-stream',
         'X-Content-Type-Options': 'nosniff',
+        Vary: 'Accept-Encoding',
+        ...(compress ? { 'Content-Encoding': 'gzip' } : {}),
+        'Cache-Control': file.includes(`${path.sep}_next${path.sep}static${path.sep}`)
+          ? 'public, max-age=31536000, immutable'
+          : 'no-cache',
       });
-      res.end(data);
+      res.end(body);
     } catch {
       res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
       res.end(await fs.readFile(path.join(root, '404.html')).catch(() => Buffer.from('Not found')));

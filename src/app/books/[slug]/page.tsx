@@ -52,9 +52,13 @@ export default async function BookPage({ params }: { params: Promise<{ slug: str
         />
       )}
       <nav className="breadcrumbs" aria-label="Breadcrumb">
-        <Link href="/">Home</Link>
+        <Link prefetch={false} href="/">
+          Home
+        </Link>
         <span aria-hidden="true">/</span>
-        <Link href="/books">Books</Link>
+        <Link prefetch={false} href="/books">
+          Books
+        </Link>
         <span aria-hidden="true">/</span>
         <span aria-current="page">{book.subtitle}</span>
       </nav>

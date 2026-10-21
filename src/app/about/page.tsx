@@ -25,7 +25,6 @@ export default function About() {
               priority
               sizes="(max-width: 760px) 90vw, 450px"
             />
-            <div className="portrait-frame" aria-hidden="true" />
           </div>
           <div className="author-copy">
             <Eyebrow>WRITING FOR THE PEOPLE</Eyebrow>
@@ -37,15 +36,13 @@ export default function About() {
             </p>
             <p className="author-signature">Jalleh Doty</p>
             <ArrowLink href="/books">Explore the writing</ArrowLink>
-            <div style={{ marginTop: 45 }}>
-              <span className="draft-label">EXTENDED BIOGRAPHY · DRAFT PLACEHOLDER</span>
-              <p>
-                The full author biography will be added after the source material from the author’s
-                Amazon or Lulu page has been verified.
-              </p>
-            </div>
           </div>
         </div>
+      </section>
+      <section className="wrap quote-feature" aria-label="From Jalleh">
+        <blockquote className="author-quote">
+          “Retain an open mind in the realm of possibilities.”<cite>JALLEH DOTY</cite>
+        </blockquote>
       </section>
       <div className="contact-invitation wrap">
         <div>

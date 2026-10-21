@@ -4,6 +4,8 @@ export type Book = {
   subtitle: string;
   volume?: number;
   cover?: string;
+  coverWidth?: number;
+  coverHeight?: number;
   authors: string[];
   description: string;
   genre?: string;
@@ -27,6 +29,8 @@ export const books: Book[] = [
     subtitle: 'Last Savior',
     volume: 1,
     cover: '/images/book-one.webp',
+    coverWidth: 600,
+    coverHeight: 906,
     authors: ['Jalleh Doty', 'Pari Adli'],
     description:
       'Last Savior is the first book in The Child of Humanity series by Jalleh Doty and Pari Adli. Begin the series here, followed by The Journey and Final Awakening. A full synopsis will be added when approved by the authors.',
@@ -39,6 +43,8 @@ export const books: Book[] = [
     subtitle: 'The Journey',
     volume: 2,
     cover: '/images/book-two.webp',
+    coverWidth: 920,
+    coverHeight: 1394,
     authors: ['Jalleh Doty', 'Pari Adli'],
     description:
       'The second volume in The Child of Humanity series, by Jalleh Doty and Pari Adli. Full synopsis and edition details will be added when confirmed by the authors.',
@@ -51,6 +57,8 @@ export const books: Book[] = [
     subtitle: 'Final Awakening',
     volume: 3,
     cover: '/images/book-three.webp',
+    coverWidth: 920,
+    coverHeight: 1481,
     authors: ['Jalleh Doty', 'Pari Adli'],
     genre: 'Speculative fiction',
     description:
@@ -73,7 +81,13 @@ export const series = books.filter((book) => book.volume);
 export const standalone = books.find((book) => !book.volume)!;
 export type Article = { slug: string; title: string; date: string; excerpt: string; body: string };
 export const articles: Article[] = [];
-export type AuthorEvent = { title: string; start: string; location: string; url?: string };
+export type AuthorEvent = {
+  title: string;
+  start: string;
+  end?: string;
+  location: string;
+  url?: string;
+};
 export const events: AuthorEvent[] = [];
 export const media: { title: string; src: string; poster: string; captions: string }[] = [];
 export const socialLinks: { label: string; url: string }[] = [];

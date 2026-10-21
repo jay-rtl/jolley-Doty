@@ -27,11 +27,13 @@ npm run typecheck
 npm run format:check
 npm run build
 npm run audit:pages
+npm run audit:luxury
+npm run audit:motion
 ```
 
 The Pages audit requires the static preview and installed Microsoft Edge. It checks rendered routes, images, subpath links, accessibility, paperback availability, query-prefilled inquiries, production canonical/sitemap URLs and responsive overflow. Set `AUDIT_BASE_URL` to audit the deployed site. Results/screenshots go to ignored `artifacts/`.
 
-`scripts/motion-audit.mjs` preserves the original focused GSAP tests: changing hero transforms, same-session replay/skip, book pointer response/reset, reading progress, portrait parallax, live reduced-motion cleanup, route changes and touch behavior. Those tests ran before the Pages conversion; `scripts/pages-audit.mjs` checks the exported build. `scripts/browser-audit.mjs` preserves historical server-build/API checks, which do not apply to GitHub Pages.
+`scripts/motion-audit.mjs` preserves the original focused GSAP tests: changing hero transforms, same-session replay/skip, book pointer response/reset, reading progress, portrait parallax, live reduced-motion cleanup, route changes and touch behavior. These tests now target the GitHub Pages subpath; `scripts/pages-audit.mjs` checks the exported build. `scripts/browser-audit.mjs` preserves historical server-build/API checks, which do not apply to GitHub Pages.
 
 ## Content and assets
 
@@ -49,11 +51,11 @@ Public assets are in `public/images/`. Do not publish questionnaires, full manus
 
 ## Animation
 
-`src/components/motion.tsx` owns GSAP matchMedia contexts and cleans them up on route/media changes. The homepage has a masked title entrance, layered trilogy display, drawn journey line and skippable intro that replays on each home entry. Desktop shelves stagger and respond to pointer depth. Portrait parallax and pointer effects are excluded on touch/reduced-motion devices. Text retains full contrast during scroll reveals. Natural scrolling is preserved. Supporting pages have short heading transitions; the top line tracks reading progress. Content is visible without JavaScript. No new animation dependency was added.
+`src/components/motion.tsx` owns GSAP matchMedia contexts and cleans them up on route/media changes. The homepage has a masked title entrance, layered trilogy display and skippable intro that replays on each home entry. The homepage exhibition uses native horizontal scroll/snap on desktop, volume selectors, previous/next controls and scoped Arrow/Home/End keyboard navigation. It becomes three vertically ordered chapters at 900px and below. Book covers respond to pointer depth; the hero CTA has restrained magnetic feedback. The footer has a short once-only reveal. Portrait parallax and pointer effects are excluded on touch/reduced-motion devices. Text retains full contrast during scroll reveals. Natural scrolling is preserved. Supporting pages have short heading transitions; the top line tracks reading progress. Content is visible without JavaScript. No new animation dependency was added.
 
 ## Static-hosting limitations
 
-GitHub Pages does not run Node/API routes or Next.js image optimization. Images were pre-optimized locally and are exported directly. `src/server/contact-route.ts` preserves the previous server implementation but is **not deployed or active**. The contact form prepares a draft locally; the visitor reviews it, opens their email app and clicks Send there. It never submits or stores correspondence on Pages. Copy email details provides a fallback when an app cannot open the full draft. With no confirmed recipient configured, preparation remains disabled.
+GitHub Pages does not run Node/API routes or Next.js image optimization. Images were pre-optimized locally and are exported directly. `src/server/contact-route.ts` preserves the previous server implementation but is **not deployed or active**. The contact form prepares a draft locally; the visitor reviews it, opens their email app and clicks Send there. It never submits or stores correspondence on Pages. Copy email details provides a fallback when an app cannot open the full draft. With no confirmed recipient configured, the form is replaced by an honest correspondence notice; no editable fields or unavailable submit action are shown.
 
 To enable manual email later, set the GitHub repository Actions variable `CONTACT_EMAIL` to the owner-approved public recipient, then rebuild/deploy. The workflow exposes it as `NEXT_PUBLIC_CONTACT_EMAIL`; it is public, not a secret. No backend is needed. Local builds can set the same public environment variable. Confirm inbox access, retention, operator contact/jurisdiction and final privacy text before activation. A server-backed delivery service would require separate implementation. The reserved server environment variables in `.env.example` cannot enable the contact API on GitHub Pages. No merchant account or payment integration is active.
 
@@ -68,3 +70,15 @@ Outstanding owner content: verified Ingram URLs, full biography/blurbs/edition d
 ## Manual email verification
 
 `node scripts/manual-email-audit.mjs` requires a LOCAL fixture build using `NEXT_PUBLIC_CONTACT_EMAIL=author@example.test` and the static preview. It tests preparation, validation, safe encoding, draft invalidation, copy/fallback, no-JS blocking and axe at 1440/390px without opening a mail app or sending mail. Rebuild with an empty recipient afterward; never deploy the fixture address. The owner has deferred supplying an address, so public contact remains disabled.
+
+## Editorial redesign
+
+The existing ivory/ink/rust palette and local Literary serif are retained. A full-width author masthead leads into the trilogy composition, followed by a curated book exhibition, asymmetric author feature, standalone collection, editorial news/events rows and typographic footer. Original covers, portrait, reading order, approved biography and SEO routes are preserved. No new runtime dependency, generated artwork, custom cursor or vertical scroll hijacking was added. Desktop exhibition is horizontally browsable even without JavaScript; mobile no-JS navigation has a visible link fallback.
+
+`src/lib/events.mjs` sorts upcoming/ongoing events oldest first and past events newest first at BUILD time. Date-only events remain upcoming through their UTC calendar day. Dates are displayed as dates; add approved location/time information to event content rather than inferring it. Rebuild when the calendar changes or a date passes. No event or announcement has been invented.
+
+See DESIGN-AUDIT.md for scoped results, lab-performance context and remaining review items.
+
+Responsive covers are generated with `node scripts/optimize-covers.mjs` (Sharp, delivery resizing/compression only; original files retained). BookCover uses native responsive image selection because GitHub Pages cannot run the Next image optimizer. Re-run the helper when an approved cover changes and update its true source dimensions in content.ts. `npm run build` automatically runs finalize-static.mjs to add dotted router-segment aliases when Windows exports nested separators; Linux output is unchanged. Local preview supports gzip and immutable hashed-script caching; hosting headers remain controlled by GitHub.
+
+Local fonts are preloaded through next/font/local using the original WOFF2 files. Internal Next links disable eager prefetch so speculative page downloads do not compete with initial content on slow connections; on-demand client navigation remains available. Delivery lab measurements and caveats are in DESIGN-AUDIT.md.

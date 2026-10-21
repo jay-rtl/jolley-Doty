@@ -8,7 +8,7 @@ const page = await context.newPage();
 const errors = [];
 page.on('pageerror', (error) => errors.push(error.message));
 const report = { checks: [], errors };
-const base = 'http://127.0.0.1:3000';
+const base = 'http://127.0.0.1:3000/jolley-Doty/';
 const transform = (selector) =>
   page
     .locator(selector)
@@ -35,18 +35,18 @@ try {
     passed: true,
   });
 
-  const stage = page.locator('.series-grid .cover-stage').first();
+  const stage = page.locator('.exhibition-track .cover-stage').first();
   await stage.scrollIntoViewIfNeeded();
   await page.waitForTimeout(1500);
-  const resting = await transform('.series-grid .book-object');
+  const resting = await transform('.exhibition-track .book-object');
   const box = await stage.boundingBox();
   await page.mouse.move(box.x + box.width * 0.8, box.y + box.height * 0.3);
   await page.waitForTimeout(600);
-  const hovering = await transform('.series-grid .book-object');
+  const hovering = await transform('.exhibition-track .book-object');
   assert.notEqual(resting, hovering, 'book must respond to pointer');
   await page.mouse.move(10, 500);
   await page.waitForTimeout(700);
-  const released = await transform('.series-grid .book-object');
+  const released = await transform('.exhibition-track .book-object');
   assert.notEqual(hovering, released, 'book must return when pointer leaves');
   report.checks.push({
     test: 'GSAP book depth responds to pointer and resets on leave',
@@ -88,7 +88,7 @@ try {
     .getByRole('navigation', { name: 'Main navigation' })
     .getByRole('link', { name: 'Books', exact: true })
     .click();
-  await page.waitForURL('**/books');
+  await page.waitForURL('**/books/');
   await page.waitForTimeout(1400);
   assert.equal(await page.locator('.hero-stage').count(), 0);
   assert.equal(await page.locator('h1').isVisible(), true);

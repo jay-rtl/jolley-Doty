@@ -39,7 +39,8 @@ export function Motion() {
             }
 
             const titleWords = document.querySelectorAll('.title-word');
-            if (titleWords.length) {
+            // Never hide already-read content with a late entrance on a slow connection.
+            if (titleWords.length && performance.now() < 2500 && window.scrollY < innerHeight / 2) {
               setIntro(true);
               document.documentElement.dataset.intro = 'running';
               const entrance = gsap.timeline({
@@ -51,22 +52,10 @@ export function Motion() {
               });
               entrance
                 .fromTo(
-                  '.hero-copy > .eyebrow',
+                  '.hero-edition',
                   { y: 16, opacity: 0 },
                   { y: 0, opacity: 1, duration: 0.65 },
                   0,
-                )
-                .fromTo(
-                  titleWords,
-                  { yPercent: 112, rotation: 4 },
-                  { yPercent: 0, rotation: 0, duration: 1.3, stagger: 0.16 },
-                  0.12,
-                )
-                .fromTo(
-                  '.hero-tagline, .hero-description, .hero-actions',
-                  { y: 28, opacity: 0 },
-                  { y: 0, opacity: 1, duration: 0.85, stagger: 0.12 },
-                  0.55,
                 )
                 .fromTo(
                   '.hero-cover-link',
@@ -87,19 +76,23 @@ export function Motion() {
                   0.66,
                 )
                 .fromTo(
-                  '.hero-feature-topline, .hero-feature-caption, .hero-scroll-note',
+                  '.hero-feature-topline, .hero-feature-caption, .hero-colophon',
                   { y: 12, opacity: 0 },
                   { y: 0, opacity: 1, duration: 0.7, stagger: 0.08 },
                   0.95,
                 );
-              const line = document.querySelector<SVGPathElement>('.journey-line path');
-              if (line) {
-                const length = line.getTotalLength();
+              if (desktop) {
                 entrance.fromTo(
-                  line,
-                  { strokeDasharray: length, strokeDashoffset: length },
-                  { strokeDashoffset: 0, duration: 1.9, ease: 'power2.inOut' },
-                  0.1,
+                  titleWords,
+                  { yPercent: 112, rotation: 4 },
+                  { yPercent: 0, rotation: 0, duration: 1.3, stagger: 0.16 },
+                  0.12,
+                );
+                entrance.fromTo(
+                  '.hero-tagline, .hero-description, .hero-actions',
+                  { y: 20 },
+                  { y: 0, duration: 0.85, stagger: 0.12 },
+                  0.55,
                 );
               }
               skip.current = () => entrance.progress(1);
@@ -222,7 +215,54 @@ export function Motion() {
                 );
             });
 
+            const footer = document.querySelector('.footer-masthead');
+            if (footer)
+              gsap.fromTo(
+                footer,
+                { y: 30 },
+                {
+                  y: 0,
+                  duration: 1.2,
+                  ease: 'power3.out',
+                  scrollTrigger: { trigger: footer, start: 'top 97%', once: true },
+                },
+              );
+
+            gsap.utils.toArray<HTMLElement>('.exhibition-panel').forEach((panel) => {
+              gsap.fromTo(
+                panel.querySelector('.exhibition-copy'),
+                { y: 22 },
+                {
+                  y: 0,
+                  duration: 1,
+                  ease: 'power3.out',
+                  scrollTrigger: { trigger: panel, start: 'top 93%', once: true },
+                },
+              );
+            });
+
             if (desktop) {
+              gsap.utils.toArray<HTMLElement>('.hero-actions .button').forEach((button) => {
+                const x = gsap.quickTo(button, 'x', { duration: 0.5, ease: 'power3.out' });
+                const y = gsap.quickTo(button, 'y', { duration: 0.5, ease: 'power3.out' });
+                const move = (event: PointerEvent) => {
+                  const box = button.getBoundingClientRect();
+                  x((event.clientX - box.left - box.width / 2) * 0.07);
+                  y((event.clientY - box.top - box.height / 2) * 0.1);
+                };
+                const reset = () => {
+                  x(0);
+                  y(0);
+                };
+                button.addEventListener('pointermove', move);
+                button.addEventListener('pointerleave', reset);
+                button.addEventListener('blur', reset);
+                cleanups.push(() => {
+                  button.removeEventListener('pointermove', move);
+                  button.removeEventListener('pointerleave', reset);
+                  button.removeEventListener('blur', reset);
+                });
+              });
               // Animation targets are nested so entrance, scroll, and pointer transforms never compete.
               const heroStage = document.querySelector<HTMLElement>('.hero-stage');
               if (heroStage) {

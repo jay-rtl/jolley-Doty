@@ -1,9 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLink, BookCover, ButtonLink, Eyebrow, PurchaseOptions } from '@/components/ui';
+import { ArrowLink, BookCover, ButtonLink, Eyebrow } from '@/components/ui';
 import { series, standalone, bio, articles, events } from '@/lib/content';
 import { pageMetadata, productionUrl } from '@/lib/site';
 import { assetPath } from '@/lib/paths';
+import { BookExhibition } from '@/components/book-exhibition';
+import { calendarGroups } from '@/lib/events.mjs';
 
 export const metadata = {
   ...pageMetadata(
@@ -16,6 +18,7 @@ export const metadata = {
 
 export default function Home() {
   const origin = productionUrl();
+  const nextEvent = calendarGroups(events).upcoming[0];
   return (
     <>
       {origin && (
@@ -40,8 +43,11 @@ export default function Home() {
       )}
       <section className="hero">
         <div className="wrap hero-inner">
-          <div className="hero-copy">
-            <Eyebrow>THE WRITING OF JALLEH DOTY</Eyebrow>
+          <div className="hero-masthead">
+            <div className="hero-edition">
+              <Eyebrow>THE WRITING OF</Eyebrow>
+              <span>AUTHOR &amp; STORYTELLER</span>
+            </div>
             <h1 aria-label="Jalleh Doty">
               <span className="title-clip">
                 <span className="title-word">Jalleh</span>
@@ -50,111 +56,79 @@ export default function Home() {
                 <span className="title-word title-word-italic">Doty.</span>
               </span>
             </h1>
-            <p className="hero-tagline">
-              “Retain an open mind
-              <br />
-              in the realm of possibilities.”
-            </p>
-            <p className="hero-description">
-              Author of <em>The Child of Humanity</em> series with Pari Adli, and{' '}
-              <em>Poetry and Satire for the Avant-Garde.</em>
-            </p>
-            <div className="hero-actions">
-              <ButtonLink href="#books">Browse the books</ButtonLink>
-              <ArrowLink href="/about">About Jalleh</ArrowLink>
-            </div>
-            <div className="hero-motion-controls" data-intro-controls />
           </div>
-          <div className="hero-feature">
-            <div className="hero-feature-topline">
-              <span>THE CHILD OF HUMANITY</span>
-              <span>01 / 03</span>
+          <div className="hero-body">
+            <div className="hero-copy">
+              <p className="hero-tagline">
+                “Retain an open mind
+                <br /> in the realm of
+                <br />
+                <em>possibilities.</em>”
+              </p>
+              <p className="hero-description">
+                Explore <em>The Child of Humanity</em>, a series written with Pari Adli, and the
+                earlier collection <em>Poetry and Satire for the Avant-Garde.</em>
+              </p>
+              <div className="hero-actions">
+                <ButtonLink href="#books">Discover the books</ButtonLink>
+                <ArrowLink href="/about">Meet Jalleh</ArrowLink>
+              </div>
+              <div className="hero-motion-controls" data-intro-controls />
             </div>
-            <div className="hero-stage">
-              <svg className="journey-line" viewBox="0 0 500 510" fill="none" aria-hidden="true">
-                <path
-                  d="M30 405C-25 255 410 65 460 175S80 490 55 323"
-                  stroke="currentColor"
-                  strokeWidth="1"
-                />
-                <circle cx="460" cy="175" r="4" fill="currentColor" />
-                <circle cx="55" cy="323" r="4" fill="currentColor" />
-              </svg>
-              <span className="hero-stage-index" aria-hidden="true">
-                I.
+            <div className="hero-feature">
+              <div className="hero-feature-topline">
+                <span>THE CHILD OF HUMANITY</span>
+                <span>BOOKS I — III</span>
+              </div>
+              <div className="hero-stage">
+                <div className="hero-companion hero-companion-three" aria-hidden="true">
+                  <BookCover book={series[2]} priority />
+                </div>
+                <div className="hero-companion hero-companion-two" aria-hidden="true">
+                  <BookCover book={series[1]} priority />
+                </div>
+                <Link
+                  prefetch={false}
+                  href={`/books/${series[0].slug}`}
+                  className="hero-cover-link"
+                  aria-label="Discover Last Savior, Book 1"
+                >
+                  <BookCover book={series[0]} priority />
+                </Link>
+              </div>
+              <div className="hero-feature-caption">
+                <span>JALLEH DOTY &amp; PARI ADLI</span>
+                <ArrowLink href={`/books/${series[0].slug}`}>Begin with Last Savior</ArrowLink>
+              </div>
+            </div>
+          </div>
+          <div className="hero-colophon">
+            <span>FICTION · POETRY · SATIRE</span>
+            <a className="hero-scroll-note" href="#books">
+              <span className="scroll-track" aria-hidden="true">
+                <span />
               </span>
-              <div className="hero-companion hero-companion-three" aria-hidden="true">
-                <BookCover book={series[2]} priority />
-              </div>
-              <div className="hero-companion hero-companion-two" aria-hidden="true">
-                <BookCover book={series[1]} priority />
-              </div>
-              <Link
-                href={`/books/${series[0].slug}`}
-                className="hero-cover-link"
-                aria-label="Discover Last Savior, Book 1"
-              >
-                <BookCover book={series[0]} priority />
-              </Link>
-            </div>
-            <div className="hero-feature-caption">
-              <div>
-                <span>BEGIN WITH BOOK ONE</span>
-                <h2>Last Savior</h2>
-              </div>
-              <ArrowLink href={`/books/${series[0].slug}`}>View book</ArrowLink>
-            </div>
+              <span>EXPLORE THE WRITING</span>
+            </a>
           </div>
-          <a className="hero-scroll-note" href="#books">
-            <span className="scroll-track" aria-hidden="true">
-              <span />
-            </span>
-            <span>SCROLL TO EXPLORE THE BOOKS</span>
-          </a>
         </div>
       </section>
       <section className="section wrap series-section" id="books">
         <div className="series-rule" aria-hidden="true" />
-        <div className="section-heading" data-reveal>
+        <div className="section-heading">
           <div>
-            <Eyebrow>THREE BOOKS. READ IN ORDER.</Eyebrow>
-            <h2>The Child of Humanity</h2>
+            <Eyebrow>THE COLLECTED SERIES</Eyebrow>
+            <h2>
+              The Child of <em>Humanity.</em>
+            </h2>
           </div>
           <p className="section-heading-description">
-            A series by Jalleh Doty &amp; Pari Adli.
+            By Jalleh Doty &amp; Pari Adli.
             <br />
-            Available format: paperback.
+            Paperback editions.
           </p>
         </div>
-        <div className="series-grid">
-          {series.map((book, i) => (
-            <article className="series-book" key={book.slug} data-reveal>
-              <Link
-                href={`/books/${book.slug}`}
-                className={`cover-stage cover-stage-${i + 1}`}
-                aria-label={`Explore ${book.subtitle}, Book ${book.volume}`}
-              >
-                <span className="shelf-number" aria-hidden="true">
-                  0{book.volume}
-                </span>
-                <BookCover book={book} />
-              </Link>
-              <div className="book-caption">
-                <div>
-                  <span className="eyebrow">BOOK {book.volume}</span>
-                  <h3>
-                    <Link href={`/books/${book.slug}`}>{book.subtitle}</Link>
-                  </h3>
-                </div>
-                <ArrowLink href={`/books/${book.slug}`}>Details</ArrowLink>
-              </div>
-              <PurchaseOptions book={book} compact />
-            </article>
-          ))}
-        </div>
-        <p className="reading-note">
-          <span>READING ORDER</span>Last Savior → The Journey → Final Awakening
-        </p>
+        <BookExhibition />
       </section>
       <section className="author-section">
         <div className="wrap author-grid">
@@ -166,11 +140,14 @@ export default function Home() {
               height={1350}
               sizes="(max-width: 760px) 90vw, 420px"
             />
+            <span className="portrait-caption">JALLEH DOTY · AUTHOR &amp; STORYTELLER</span>
           </div>
           <div className="author-copy" data-reveal>
             <Eyebrow>ABOUT THE AUTHOR</Eyebrow>
             <h2>
-              A life in <em>words.</em>
+              Writing for
+              <br />
+              <em>the people.</em>
             </h2>
             <p>
               Jalleh Doty has spent approximately twenty years writing, with an ambition to bring
@@ -196,7 +173,7 @@ export default function Home() {
             <em>for the Avant-Garde</em>
           </h2>
           <p>
-            Jalleh’s earlier standalone collection. Official cover and full description to follow.
+            An earlier standalone collection by Jalleh Doty, beyond The Child of Humanity series.
           </p>
           <ArrowLink href={`/books/${standalone.slug}`}>About the collection</ArrowLink>
         </div>
@@ -221,8 +198,8 @@ export default function Home() {
             <article>
               <span className="journal-label">Events</span>
               <p>
-                {events[0]
-                  ? `${events[0].title} · ${events[0].location}`
+                {nextEvent
+                  ? `${nextEvent.title} · ${nextEvent.location}`
                   : 'No upcoming dates announced. Contact Jalleh about readings and speaking invitations.'}
               </p>
               <ArrowLink href="/events">View events</ArrowLink>

@@ -87,6 +87,25 @@ export function ContactForm({
       );
     }
   }
+  if (!ready)
+    return (
+      <section className="contact-standby" aria-labelledby="contact-standby-title">
+        <p className="eyebrow">CORRESPONDENCE</p>
+        <h2 id="contact-standby-title">
+          A place for
+          <br />
+          <em>your words.</em>
+        </h2>
+        <p role="status">
+          Contact details will be shared here once confirmed. Reader letters, media inquiries and
+          speaking invitations are welcome when correspondence opens.
+        </p>
+        <p>No messages are collected or sent by this website.</p>
+        <Link prefetch={false} className="arrow-link" href="/books">
+          Explore the books <ArrowUpRight size={17} aria-hidden="true" />
+        </Link>
+      </section>
+    );
   const error = (field: string) =>
     errors[field] ? (
       <p id={`${field}-error`} className="field-error">
@@ -106,12 +125,6 @@ export function ContactForm({
         }
       }}
     >
-      {!ready && (
-        <div className="notice" role="status">
-          The author’s contact email is being confirmed. Email preparation will be available once it
-          is set.
-        </div>
-      )}
       <p className="manual-email-intro">
         Fill out this form to prepare an email. You’ll review the draft, then send it yourself from
         your email app. This website does not send messages automatically.
@@ -211,7 +224,11 @@ export function ContactForm({
           />
           <span>
             I understand that the draft will include my details and that I must send it from my
-            email app. Read the <Link href="/privacy">privacy notice</Link>.
+            email app. Read the{' '}
+            <Link prefetch={false} href="/privacy">
+              privacy notice
+            </Link>
+            .
           </span>
         </label>
         {error('consent')}
